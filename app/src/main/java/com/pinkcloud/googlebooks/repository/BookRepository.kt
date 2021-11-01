@@ -23,9 +23,7 @@ class BookRepository @Inject constructor(
     private val bookDao: BookDao
 ) {
 
-    // distinctUntilChanged() address blink issue when submitting books to adapter by clicking star.
     val books = bookDao.getBooks()
-        .distinctUntilChanged()
         .flowOn(Dispatchers.IO)
         .conflate()
 
