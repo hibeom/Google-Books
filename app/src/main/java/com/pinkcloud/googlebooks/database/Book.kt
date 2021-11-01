@@ -18,7 +18,8 @@ data class Book(
     val title: String,
     val description: String,
     val authors: List<String>,
-    val thumbnail: String
+    val thumbnail: String,
+    val isFavorite: Boolean
 )
 
 //TODO handle json parse exception

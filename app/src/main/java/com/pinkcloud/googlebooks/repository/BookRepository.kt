@@ -28,7 +28,8 @@ class BookRepository @Inject constructor(
                 item.volumeInfo.title,
                 item.volumeInfo.description,
                 item.volumeInfo.authors,
-                item.volumeInfo.imageLinks.thumbnail
+                item.volumeInfo.imageLinks.thumbnail,
+                isFavorite = false
             )
         }
         bookDao.insertAll(books)
