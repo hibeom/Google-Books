@@ -12,17 +12,17 @@ class HomeViewModel @Inject constructor(private val repository: BookRepository) 
 
     val books = repository.books.asLiveData()
 
-    private val _isNetworkError = MutableLiveData<Boolean>(false)
+    private val _isNetworkError = MutableLiveData(false)
     val isNetworkError: LiveData<Boolean>
         get() = _isNetworkError
 
     init {
         viewModelScope.launch {
-            // TODO handle io exception and set progress bar visibility
             try {
                 repository.refreshBooks()
+                _isNetworkError.value = false
             } catch (networkException: IOException) {
-
+                _isNetworkError.value = true
             }
         }
     }

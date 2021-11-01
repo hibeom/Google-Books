@@ -3,4 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorite</string>
     <string name="thumbnail">Thumbnail</string>
+    <string name="network_error_occured">Network error occured!</string>
+    <string name="no_title">NO TITLE</string>
 </resources>

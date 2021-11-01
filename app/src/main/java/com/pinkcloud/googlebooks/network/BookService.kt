@@ -7,6 +7,8 @@ interface BookService {
     @GET("books/v1/volumes")
     suspend fun getBooks(
         @Query("q") search: String = "android",
-        @Query("printType") printType: String = "books"
+        @Query("printType") printType: String = "books",
+        @Query("maxResults") limit: Int = 30,
+        @Query("startIndex") offset: Int = 0
     ): BooksResponse
 }
