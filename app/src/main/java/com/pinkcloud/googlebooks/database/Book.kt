@@ -15,11 +15,11 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 data class Book(
     @PrimaryKey
     val id: String,
-    val title: String,
-    val description: String,
-    val authors: List<String>,
-    val thumbnail: String,
-    val isFavorite: Boolean
+    var title: String,
+    var description: String,
+    var authors: List<String>,
+    var thumbnail: String,
+    var isFavorite: Boolean
 )
 
 //TODO handle json parse exception

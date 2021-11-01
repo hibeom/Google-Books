@@ -9,6 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +23,9 @@ class BookRepository @Inject constructor(
     private val bookDao: BookDao
 ) {
 
+    // distinctUntilChanged() address blink issue when submitting books to adapter by clicking star.
     val books = bookDao.getBooks()
+        .distinctUntilChanged()
         .flowOn(Dispatchers.IO)
         .conflate()
 

@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.databinding.FragmentHomeBinding
 import com.pinkcloud.googlebooks.ui.component.BookAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,6 +18,7 @@ class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding? = null
+
     @Inject
     lateinit var adapter: BookAdapter
 
@@ -37,6 +36,9 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
 
         binding.recyclerView.adapter = adapter
+        adapter.onStarClicked = { book ->
+            homeViewModel.changeFavorite(book)
+        }
 
         homeViewModel.books.observe(viewLifecycleOwner, { books ->
             adapter.submitList(books)

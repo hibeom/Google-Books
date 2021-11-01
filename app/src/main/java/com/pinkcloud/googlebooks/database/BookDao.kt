@@ -1,9 +1,6 @@
 package com.pinkcloud.googlebooks.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,4 +11,7 @@ interface BookDao {
 
     @Query("SELECT * FROM books")
     fun getBooks(): Flow<List<Book>>
+
+    @Update
+    suspend fun update(book: Book)
 }
