@@ -7,9 +7,9 @@ import retrofit2.http.Query
 interface BookService {
     @GET("books/v1/volumes")
     suspend fun getBooks(
-        @Query("q") search: String = "android",
-        @Query("printType") printType: String = "books",
-        @Query("maxResults") limit: Int = 30,
-        @Query("startIndex") offset: Int = 0
+        @Query("q") search: String,
+        @Query("printType") printType: String,
+        @Query("maxResults") limit: Int,
+        @Query("startIndex") offset: Int
     ): Response<BooksResponse>
 }
