@@ -4,42 +4,35 @@ import android.content.Context
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.database.Book
 import com.pinkcloud.googlebooks.database.BookDao
-import com.pinkcloud.googlebooks.network.BookService
+import com.pinkcloud.googlebooks.network.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
-import timber.log.Timber
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BookRepository @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val bookService: BookService,
+    private val remoteDataSource: RemoteDataSource,
     private val bookDao: BookDao
-) {
+) : BaseApiResponse() {
 
     val books = bookDao.getBooks()
         .flowOn(Dispatchers.IO)
         .conflate()
 
-    suspend fun refreshBooks() {
-        // TODO pagination
-        val bookResponse = bookService.getBooks()
-        val books = bookResponse.items.map { item ->
-            Book(
-                item.id,
-                item.volumeInfo.title ?: context.getString(R.string.no_title),
-                item.volumeInfo.description ?: "",
-                item.volumeInfo.authors ?: listOf(""),
-                item.volumeInfo.imageLinks?.thumbnail ?: "",
-                isFavorite = false
-            )
+    suspend fun refreshBooks() = withContext(Dispatchers.IO) {
+        val networkResult = safeApiCall { remoteDataSource.getBooks() }
+        if (networkResult is NetworkResult.Success) {
+            val bookResponse = networkResult.data
+            val books = bookResponse?.asDomainModel(context)
+            books?.let {
+                bookDao.insertAll(it)
+            }
         }
-        bookDao.insertAll(books)
+        return@withContext networkResult
     }
 }

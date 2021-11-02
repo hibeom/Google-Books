@@ -30,6 +30,8 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = favoriteViewModel
 
         binding.recyclerView.adapter = adapter
         adapter.onStarClicked = { book ->

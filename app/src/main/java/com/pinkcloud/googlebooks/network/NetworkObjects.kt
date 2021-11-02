@@ -1,6 +1,11 @@
 package com.pinkcloud.googlebooks.network
 
+import android.content.Context
+import com.pinkcloud.googlebooks.R
+import com.pinkcloud.googlebooks.database.Book
 import com.squareup.moshi.JsonClass
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @JsonClass(generateAdapter = true)
 data class BooksResponse(
@@ -27,3 +32,17 @@ data class VolumeInfo(
 data class ImageLinks(
     val thumbnail: String?
 )
+
+suspend fun BooksResponse.asDomainModel(context: Context) =
+    withContext(Dispatchers.Default) {
+        items.map { item ->
+            Book(
+                item.id,
+                item.volumeInfo.title ?: context.getString(R.string.no_title),
+                item.volumeInfo.description ?: "",
+                item.volumeInfo.authors ?: listOf(""),
+                item.volumeInfo.imageLinks?.thumbnail ?: "",
+                isFavorite = false
+            )
+        }
+    }

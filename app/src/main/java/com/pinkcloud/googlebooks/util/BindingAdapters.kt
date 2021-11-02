@@ -8,12 +8,17 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.database.Book
+import com.pinkcloud.googlebooks.network.BooksResponse
+import com.pinkcloud.googlebooks.network.NetworkResult
 import timber.log.Timber
 
 @BindingAdapter("books", "isNetworkError")
-fun setLoadingVisibility(view: View, books: List<Book>?, isNetworkError: Boolean) {
-    view.visibility = if (books.isNullOrEmpty()) View.VISIBLE else View.GONE
-    if (isNetworkError) view.visibility = View.GONE
+fun setLoadingVisibility(view: View, books: List<Book>?, networkEvent: NetworkResult<BooksResponse>) {
+    view.visibility = if (books.isNullOrEmpty() && networkEvent is NetworkResult.Loading) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
 }
 
 @BindingAdapter("textList")
@@ -32,4 +37,9 @@ fun setFavoriteTint(imageView: ImageView, isFavorite: Boolean) {
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context).load(url).placeholder(R.drawable.ic_book).centerCrop().into(imageView)
+}
+
+@BindingAdapter("favorites")
+fun setNoFavoritesVisibility(view: View, books: List<Book>?) {
+    view.visibility = if (books.isNullOrEmpty()) View.VISIBLE else View.GONE
 }

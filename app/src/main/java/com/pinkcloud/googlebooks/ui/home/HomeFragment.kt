@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.databinding.FragmentHomeBinding
+import com.pinkcloud.googlebooks.network.NetworkResult
 import com.pinkcloud.googlebooks.ui.component.BookAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -43,11 +44,11 @@ class HomeFragment : Fragment() {
         homeViewModel.books.observe(viewLifecycleOwner, { books ->
             adapter.submitList(books)
         })
-        homeViewModel.isNetworkError.observe(viewLifecycleOwner, { isNetworkError ->
-            if (isNetworkError) {
+        homeViewModel.networkEvent.observe(viewLifecycleOwner, { networkEvent ->
+            if (networkEvent is NetworkResult.Error) {
                 Snackbar.make(
                     binding.root,
-                    getString(R.string.network_error_occured),
+                    networkEvent.message!!,
                     Snackbar.LENGTH_SHORT
                 ).show()
             }

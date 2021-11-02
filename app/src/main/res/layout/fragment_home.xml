@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:books="@{viewModel.books}"
-            app:isNetworkError="@{viewModel.isNetworkError}"/>
+            app:isNetworkError="@{viewModel.networkEvent}"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
