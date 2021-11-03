@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.databinding.FragmentHomeBinding
 import com.pinkcloud.googlebooks.network.NetworkResult
 import com.pinkcloud.googlebooks.ui.component.BookAdapter
@@ -18,7 +16,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels(
+//        ownerProducer = { requireActivity() } // not viewModel to be cleared when fragment is recreated
+    )
     private var _binding: FragmentHomeBinding? = null
 
     @Inject

@@ -8,6 +8,7 @@ import com.pinkcloud.googlebooks.network.NetworkResult
 import com.pinkcloud.googlebooks.repository.BookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -16,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val bookDao: BookDao,
     private val repository: BookRepository
 ) : ViewModel() {
@@ -48,10 +48,5 @@ class HomeViewModel @Inject constructor(
             val networkResult = repository.refreshBooks()
             _networkEvent.value = networkResult
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Timber.d("oncleared")
     }
 }

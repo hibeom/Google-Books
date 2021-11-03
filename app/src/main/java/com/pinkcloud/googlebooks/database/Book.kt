@@ -22,7 +22,6 @@ data class Book(
     var isFavorite: Boolean
 )
 
-//TODO handle json parse exception
 class Converters {
 
     private val adapter: JsonAdapter<List<String>>

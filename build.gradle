@@ -4,7 +4,7 @@ buildscript {
         kotlin_version = "1.5.30"
         room_version = '2.3.0'
         coroutine_version = '1.5.2'
-        navigation_version = '2.3.5'
+        navigation_version = '2.4.0-beta02' // Multiple Back Stack Support
         hilt_version = '2.38.1'
         retrofit_version = "2.9.0"
         version_moshi = "1.9.3"
@@ -16,7 +16,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
