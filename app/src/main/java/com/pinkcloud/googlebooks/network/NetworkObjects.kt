@@ -11,6 +11,7 @@ data class BooksResponse(
 
 @JsonClass(generateAdapter = true)
 data class Item(
+    val id: String,
     val volumeInfo: VolumeInfo
 )
 
