@@ -3,6 +3,7 @@ package com.pinkcloud.googlebooks.di
 import android.content.Context
 import androidx.room.Room
 import com.pinkcloud.googlebooks.database.BookDatabase
+import com.pinkcloud.googlebooks.database.FavoriteDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,10 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideBookDao(database: BookDatabase) = database.bookDao
+
+    @Provides
+    @Singleton
+    fun provideFavoriteDao(database: BookDatabase) = database.favoriteDao
 
     @Provides
     @Singleton

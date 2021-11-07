@@ -18,7 +18,7 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
 
     @Inject
-    lateinit var adapter: BookAdapter
+    lateinit var adapter: FavoriteAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,12 +34,12 @@ class FavoriteFragment : Fragment() {
         binding.viewModel = favoriteViewModel
 
         binding.recyclerView.adapter = adapter
-        adapter.onStarClicked = { book ->
-            favoriteViewModel.changeFavorite(book)
+        adapter.onStarClicked = { favorite ->
+            favoriteViewModel.changeFavorite(favorite)
         }
 
-        favoriteViewModel.favoriteBooks.observe(viewLifecycleOwner, { books ->
-            adapter.submitList(books)
+        favoriteViewModel.favoriteBooks.observe(viewLifecycleOwner, { favorites ->
+            adapter.submitList(favorites)
         })
 
         return binding.root

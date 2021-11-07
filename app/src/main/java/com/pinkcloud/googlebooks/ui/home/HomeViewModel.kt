@@ -3,20 +3,20 @@ package com.pinkcloud.googlebooks.ui.home
 import androidx.lifecycle.*
 import com.pinkcloud.googlebooks.database.Book
 import com.pinkcloud.googlebooks.database.BookDao
+import com.pinkcloud.googlebooks.database.FavoriteDao
+import com.pinkcloud.googlebooks.database.asFavorite
 import com.pinkcloud.googlebooks.network.BooksResponse
 import com.pinkcloud.googlebooks.network.NetworkResult
 import com.pinkcloud.googlebooks.repository.BookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val bookDao: BookDao,
+    private val favoriteDao: FavoriteDao,
     private val repository: BookRepository
 ) : ViewModel() {
 
@@ -41,6 +41,9 @@ class HomeViewModel @Inject constructor(
         book.isFavorite = !book.isFavorite
         viewModelScope.launch {
             bookDao.update(book)
+            val favorite = book.asFavorite()
+            if (book.isFavorite) favoriteDao.insert(favorite)
+            else favoriteDao.delete(favorite)
         }
     }
 }

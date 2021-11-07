@@ -4,17 +4,16 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 
-@Entity(tableName = "books")
+@Entity(tableName = "favorites")
 @TypeConverters(Converters::class)
-data class Book(
+data class Favorite(
     @PrimaryKey
     val id: String,
     var title: String,
     var description: String,
     var authors: List<String>,
-    var thumbnail: String,
-    var isFavorite: Boolean
+    var thumbnail: String
 )
 
-fun Book.asFavorite(): Favorite =
-    Favorite(id, title, description, authors, thumbnail)
+fun Favorite.asBook(isFavorite: Boolean): Book =
+    Book(id, title, description, authors, thumbnail, isFavorite)

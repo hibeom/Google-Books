@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.database.Book
+import com.pinkcloud.googlebooks.database.Favorite
 import com.pinkcloud.googlebooks.network.BooksResponse
 import com.pinkcloud.googlebooks.network.NetworkResult
 import timber.log.Timber
@@ -40,6 +41,6 @@ fun setImageUrl(imageView: ImageView, url: String) {
 }
 
 @BindingAdapter("favorites")
-fun setNoFavoritesVisibility(view: View, books: List<Book>?) {
-    view.visibility = if (books.isNullOrEmpty()) View.VISIBLE else View.GONE
+fun setNoFavoritesVisibility(view: View, favorites: List<Favorite>?) {
+    view.visibility = if (favorites.isNullOrEmpty()) View.VISIBLE else View.GONE
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.database.Book
 import com.pinkcloud.googlebooks.database.BookDao
+import com.pinkcloud.googlebooks.database.FavoriteDao
 import com.pinkcloud.googlebooks.network.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,15 @@ import javax.inject.Singleton
 class BookRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val remoteDataSource: RemoteDataSource,
-    private val bookDao: BookDao
+    private val bookDao: BookDao,
+    private val favoriteDao: FavoriteDao
 ) : BaseApiResponse() {
 
     val books = bookDao.getBooks()
+        .flowOn(Dispatchers.IO)
+        .conflate()
+
+    val favorites = favoriteDao.getFavorites()
         .flowOn(Dispatchers.IO)
         .conflate()
 
