@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.snackbar.Snackbar
-import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.databinding.FragmentHomeBinding
 import com.pinkcloud.googlebooks.network.NetworkResult
 import com.pinkcloud.googlebooks.ui.component.BookAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,6 +30,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    @ExperimentalPagingApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,9 +45,13 @@ class HomeFragment : Fragment() {
             homeViewModel.changeFavorite(book)
         }
 
-        homeViewModel.books.observe(viewLifecycleOwner, { books ->
-            adapter.submitList(books)
-        })
+        lifecycleScope.launch {
+            homeViewModel.bookPagingFlow
+                .collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+        }
+
         homeViewModel.networkEvent.observe(viewLifecycleOwner, { networkEvent ->
             if (networkEvent is NetworkResult.Error) {
                 Snackbar.make(

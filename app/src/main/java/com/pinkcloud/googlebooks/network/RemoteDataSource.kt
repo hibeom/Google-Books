@@ -12,7 +12,7 @@ class RemoteDataSource @Inject constructor(
     suspend fun getBooks(
         search: String = "android",
         printType: String = "books",
-        limit: Int = 30,
+        limit: Int = NETWORK_PAGE_SIZE,
         offset: Int = 0
     ): Response<BooksResponse> {
         val permittedLimit = if (limit > 40) {
@@ -20,5 +20,9 @@ class RemoteDataSource @Inject constructor(
             40
         } else limit
         return bookService.getBooks(search, printType, permittedLimit, offset)
+    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 30
     }
 }

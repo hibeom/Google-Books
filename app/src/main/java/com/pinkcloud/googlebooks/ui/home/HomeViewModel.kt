@@ -1,6 +1,8 @@
 package com.pinkcloud.googlebooks.ui.home
 
 import androidx.lifecycle.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.cachedIn
 import com.pinkcloud.googlebooks.database.Book
 import com.pinkcloud.googlebooks.database.BookDao
 import com.pinkcloud.googlebooks.database.FavoriteDao
@@ -20,10 +22,10 @@ class HomeViewModel @Inject constructor(
     private val repository: BookRepository
 ) : ViewModel() {
 
-    // distinctUntilChanged() address blink issue when submitting books to adapter by clicking star.
-    val books = repository.books
-        .distinctUntilChanged()
-        .asLiveData()
+    @ExperimentalPagingApi
+    val bookPagingFlow = repository
+        .getBookCacheStream()
+        .cachedIn(viewModelScope)
 
     private val _networkEvent =
         MutableLiveData<NetworkResult<BooksResponse>>(NetworkResult.Loading())

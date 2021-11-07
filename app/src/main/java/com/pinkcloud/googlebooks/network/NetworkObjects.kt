@@ -33,12 +33,14 @@ data class ImageLinks(
     val thumbnail: String?
 )
 
-suspend fun BooksResponse.asDomainModel(context: Context) =
+private const val NO_TITLE = "NO TITLE"
+
+suspend fun BooksResponse.asDomainModel() =
     withContext(Dispatchers.Default) {
         items.map { item ->
             Book(
                 item.id,
-                item.volumeInfo.title ?: context.getString(R.string.no_title),
+                item.volumeInfo.title ?: NO_TITLE,
                 item.volumeInfo.description ?: "",
                 item.volumeInfo.authors ?: listOf(""),
                 item.volumeInfo.imageLinks?.thumbnail ?: "",

@@ -25,6 +25,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideRemoteKeyDao(database: BookDatabase) = database.remoteKeyDao
+
+    @Provides
+    @Singleton
     fun provideBookDatabase(@ApplicationContext context: Context): BookDatabase {
         return Room.databaseBuilder(
             context,
