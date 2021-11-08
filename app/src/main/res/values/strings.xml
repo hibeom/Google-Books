@@ -6,4 +6,5 @@
     <string name="network_error_occurred">Network error occured!</string>
     <string name="no_title">NO TITLE</string>
     <string name="no_favorites">No favorite books</string>
+    <string name="retry">RETRY</string>
 </resources>

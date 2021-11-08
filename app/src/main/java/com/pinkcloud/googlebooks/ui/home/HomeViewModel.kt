@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val bookDao: BookDao,
     private val repository: BookRepository
 ) : ViewModel() {
@@ -31,10 +32,7 @@ class HomeViewModel @Inject constructor(
         get() = _networkEvent
 
     init {
-        viewModelScope.launch {
-            val networkResult = repository.refreshBooks()
-            _networkEvent.value = networkResult
-        }
+        refreshBooks()
     }
 
     fun changeFavorite(book: Book) {
@@ -42,5 +40,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             bookDao.update(book)
         }
+    }
+
+    fun refreshBooks() {
+        viewModelScope.launch {
+            _networkEvent.value = NetworkResult.Loading()
+            val networkResult = repository.refreshBooks()
+            _networkEvent.value = networkResult
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("oncleared")
     }
 }

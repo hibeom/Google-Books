@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.pinkcloud.googlebooks.R
 import com.pinkcloud.googlebooks.databinding.FragmentHomeBinding
@@ -37,6 +38,7 @@ class HomeFragment : Fragment() {
         binding.viewModel = homeViewModel
 
         binding.recyclerView.adapter = adapter
+
         adapter.onStarClicked = { book ->
             homeViewModel.changeFavorite(book)
         }

@@ -12,9 +12,18 @@ import com.pinkcloud.googlebooks.network.BooksResponse
 import com.pinkcloud.googlebooks.network.NetworkResult
 import timber.log.Timber
 
-@BindingAdapter("books", "isNetworkError")
+@BindingAdapter("books", "networkEvent")
 fun setLoadingVisibility(view: View, books: List<Book>?, networkEvent: NetworkResult<BooksResponse>) {
     view.visibility = if (books.isNullOrEmpty() && networkEvent is NetworkResult.Loading) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
+@BindingAdapter("books", "isNetworkError")
+fun setRetryVisibility(view: View, books: List<Book>?, networkEvent: NetworkResult<BooksResponse>) {
+    view.visibility = if (books.isNullOrEmpty() && networkEvent is NetworkResult.Error) {
         View.VISIBLE
     } else {
         View.GONE

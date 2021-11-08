@@ -25,7 +25,7 @@ class BookRepository @Inject constructor(
         .conflate()
 
     suspend fun refreshBooks() = withContext(Dispatchers.IO) {
-        val networkResult = safeApiCall { remoteDataSource.getBooks() }
+        val networkResult = safeApiCall { remoteDataSource.getBooks(limit = 40) }
         if (networkResult is NetworkResult.Success) {
             val bookResponse = networkResult.data
             val books = bookResponse?.asDomainModel(context)
